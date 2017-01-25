@@ -1,0 +1,31 @@
+{
+  "name": "Docker-Screeps",
+  "version": "1.0.0",
+  "description": "A Docker container for the MMO strategy game, Screeps",
+  "contributors": [
+    "Seth Cook <cooker52@gmail.com> (https://github.com/MacaroonCookie)"
+  ],
+  "homepage": "https://github.com/MacaroonCookie/Docker-Screeps",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MacaroonCookie/Docker-Screeps.git"
+  },
+  "bug": {
+    "url": "https://github.com/MacaroonCookie/Docker-Screeps/issues"
+  },
+  "keywords": [
+    "docker",
+    "docker-compose",
+    "docker-engine",
+    "docker-io",
+    "game",
+    "grunt",
+    "mmo",
+    "screeps",
+    "nodejs"
+  ],
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-docker-io": "0.7.0"
+  }
+}

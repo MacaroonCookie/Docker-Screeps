@@ -1,0 +1,39 @@
+;If you launch the server without running the local Steam client, 
+;then the Steam Web API key is required for authenticating users. 
+;It can be obtained on this page: http://steamcommunity.com/dev/apikey
+steam_api_key = <STEAM_KEY>
+
+;The port number on which the game server should listen.
+port = 21025
+
+;The hostname on which the game server should listen.
+host = 0.0.0.0
+
+;The server password which should be provided on user sign in.
+password = <SCREEPS_PASSWORD>
+
+;The port number on which the CLI server should listen. Defaults to port+1.
+cli_port = 21026
+
+;The hostname on which the CLI server should listen.
+cli_host = 0.0.0.0
+
+;The number of parallel runner worker processes to launch. Don't set this 
+;option greater than the number of your physical CPU cores.
+runners_cnt = <RUNNERS>
+
+;The number of parallel processor worker processes to launch. Don't set this 
+;option greater than the number of your physical CPU cores.
+processors_cnt = <PROCESSORS>
+
+;The path to directory where logs will be created.
+logdir = <DIR_LOGS>
+
+;The path to JSON file with the list of custom mods to load.
+modfile = <FILE_MOD>
+
+;The path to directory where static assets are located.
+assetdir = <DIR_ASSETS>
+
+;The path to the database file.
+db = <FILE_DB>
