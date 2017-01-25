@@ -1,6 +1,7 @@
 FROM node:7.4.0
 MAINTAINER Seth Cook <cooker52@gmail.com>
 
+ARG SCREEPSVERSION=latest
 
 RUN "/bin/mkdir" \
     "-p" \
@@ -11,7 +12,7 @@ RUN "/bin/mkdir" \
 ADD launch-screeps.sh /screeps/scripts/launch-screeps.sh
 ADD screepsrc.tmpl /screeps/scripts/screepsrc.tmpl
 
-RUN npm -g install screeps
+RUN npm -g install screeps@${SCREEPSVERSION}
 
 VOLUME "/screeps/lib"
 VOLUME "/screeps/logs"
