@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SCREEPS_DIR=/screeps
-SCREEPS_LIB=${SCREEPS_DIR}/lib
+SCREEPS_DATA=${SCREEPS_DIR}/data
 SCREEPS_LOGS=${SCREEPS_DIR}/logs
 SCREEPS_SCRIPTS=${SCREEPS_DIR}/scripts
 
@@ -12,8 +12,8 @@ fi
 
 # Check if the Screeps server needs initialization
 NEEDSINIT=1
-if [ ! "$(ls -A $SCREEPS_LIB)" ] ; then
-  echo ${STEAM_KEY} | /usr/local/bin/screeps init ${SCREEPS_LIB}
+if [ ! "$(ls -A $SCREEPS_DATA)" ] ; then
+  echo ${STEAM_KEY} | /usr/local/bin/screeps init ${SCREEPS_DATA}
   if [ $? -ne 0 ] ; then
     echo "Failed to initialize the Screeps directory."
     exit 1
@@ -21,28 +21,13 @@ if [ ! "$(ls -A $SCREEPS_LIB)" ] ; then
 fi
 
 # Overwrite the ScreepSrc file if necessary
-if [ $OVERRIDESRC -eq 0 ] ; then
-  [ $SCREEPS_DB == "UNDEFINED" ] && SCREEPS_DB=db.json
-  [ $SCREEPS_ASSETS == "UNDEFINED" ] && SCREEPS_ASSETS=assetS/
-  [ $SCREEPS_MODS == "UNDEFINED" ] && SCREEPS_MODS=mods.json
-  [ $SCREEPS_PROCESSORS == "UNDEFINED" ] && SCREEPS_PROCESSORS=2
-  [ $SCREEPS_RUNNERS == "UNDEFINED" ] && SCREEPS_RUNNERS=2
-  [ $SCREEPS_PASSWORD == "UNDEFINED" ] && SCREEPS_PASSWORD=
+screeps_opts="--cli_host 0.0.0.0 --cli_port 21026 --port 21025 --host 0.0.0.0 --logdir ${SCREEPS_LOGS}"
+[ $SCREEPS_DB != "UNDEFINED" ] && screeps_opts="${screeps_opts} --db ${SCREEPS_DB}"
+[ $SCREEPS_ASSETS != "UNDEFINED" ] && screeps_opts="${screeps_opts} --assetdir ${SCREEPS_ASSETS}"
+[ $SCREEPS_MODS != "UNDEFINED" ] && screeps_opts="${screeps_opts} --modfile ${SCREEPS_MODS}"
+[ $SCREEPS_PROCESSORS != "UNDEFINED" ] && screeps_opts="${screeps_opts} --processors_cnt ${SCREEPS_PROCESSORS}"
+[ $SCREEPS_RUNNERS != "UNDEFINED" ] && screeps_opts="${screeps_opts} --runners_cnt ${SCREEPS_RUNNERS}"
+[ $SCREEPS_PASSWORD != "UNDEFINED" ] && screeps_opts="${screeps_opts} --password '${SCREEPS_PASSWORD}'"
+[ $STEAM_KEY != "UNDEFINED" ] && screeps_opts="${screeps_opts} --steam_api_key ${STEAM_KEY}"
 
-  if [ -f ${SCREEPS_LIB}/.screepsrc ] ; then
-    mv ${SCREEPS_LIB}/.screepsrc ${SCREEPS_LIB}/.screepsrc.docker-bak.$(/bin/date -u +%Y%m%dT%H%M%S)
-  fi
-
-  cat ${SCREEPS_SCRIPTS}/screepsrc.tmpl | \
-  sed -e "s|<STEAM_KEY>|${STEAM_KEY}|" \
-      -e "s|<SCREEPS_PASSWORD>|${SCREEPS_PASSWORD}|" \
-      -e "s|<RUNNERS>|${SCREEPS_RUNNERS}|" \
-      -e "s|<PROCESSORS>|${SCREEPS_PROCESSORS}|" \
-      -e "s|<DIR_LOGS>|${SCREEPS_LOGS}|" \
-      -e "s|<DIR_ASSETS>|${SCREEPS_ASSETS}|" \
-      -e "s|<FILE_MOD>|${SCREEPS_MODS}|" \
-      -e "s|<FILE_DB>|${SCREEPS_DB}|" > \
-  ${SCREEPS_LIB}/.screepsrc
-fi
-
-/usr/local/bin/screeps start
+/usr/local/bin/screeps start ${screeps_opts}
